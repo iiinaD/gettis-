@@ -1,0 +1,3 @@
+/home/danielh/Documents/cpp/gettisXX/cmake-build-debug/CMakeFiles/gettisXX.dir
+/home/danielh/Documents/cpp/gettisXX/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/danielh/Documents/cpp/gettisXX/cmake-build-debug/CMakeFiles/rebuild_cache.dir
