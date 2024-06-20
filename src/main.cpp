@@ -1,15 +1,97 @@
 #include <iostream>
+#include <curl/curl.h>
+#include <unordered_map>
+#include "Language.h"
+#include "CompiledLanguage.h"
 
 using std::string;
 
-enum lang {
-    java,
-    python,
-    c,
-    cxx
+
+void getTestFiles() {
+    CURL *curl;
+    CURLcode res;
+    FILE *file;
+    const char *url = "https://open.kattis.com/problems/twosum/file/statement/samples.zip";
+    const char *fileName = "samples.zip";
+
+    curl = curl_easy_init();
+    if(curl) {
+
+        file = fopen(fileName,"wb");
+        if(file == NULL){
+            std::cerr << "Error opening file" << fileName << std::endl;
+            return;
+        }
+
+        curl_easy_setopt(curl, CURLOPT_URL, url); //Set the url to be curled from
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL); //Makes it so libcurl dosent handle the data on its own
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, file); //Makes libcurl write the results to the file
+
+        /* Perform the request, res gets the return code */
+        res = curl_easy_perform(curl);
+        /* Check for errors */
+        if (res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                    curl_easy_strerror(res));
+        } else {
+            std::cout << "\nDownload completed successfully\n";
+        }
+        /* always cleanup */
+        curl_easy_cleanup(curl);
+        fclose(file); //Closing the file
+    }
+    //TODO unzip file
+}
+
+void initialiseProject(string problemName){
+
+}
+
+void initialiseProject(string problemName, Language lang){
+
+}
+
+std::unordered_map<string, char> COMMANDS = {
+        {"init", 'i'},
+        {"test", 't'},
+        {"submit", 's'},
+        {"help", 'h'}
 };
 
-int main() {
+std::unordered_map<string, Language> LANGUAGE = {
+        {"java", new CompiledLanguage()}
+};
+
+int main(int argc, char *argv[]) {
     std::cout << "Hello, World!" << std::endl;
+
+    if (argc <= 1) {
+        std::cout << "Incorrect usage of the gettis command. See \"gettis help\" for more info";
+    }
+    // Read the command
+    char command = COMMANDS[argv[1]];
+
+    switch (command) {
+        case 'i':
+            // Run init
+            break;
+        case 't':
+            // Run test
+            break;
+        case 's':
+            // Run submit
+            break;
+        case 'h':
+            // Run help
+            break;
+        default:
+
+            break;
+    }
+
+
+
+    getTestFiles();
+    std::cout << "\nFinished";
     return 0;
 }

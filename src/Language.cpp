@@ -4,7 +4,7 @@
 
 #include "Language.h"
 
-void Language::test() {
-    
+void Language::execute() {
+
 }
 

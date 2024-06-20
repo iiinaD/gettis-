@@ -7,9 +7,7 @@
 
 
 class Language {
-    public:
-        int x;
-    void test();
+    void execute();
 };
 
 
