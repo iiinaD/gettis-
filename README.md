@@ -1,2 +1,2 @@
-# gettis-
-Cli tool for kattis
+# gettisXX
+Cli tool for kattis.

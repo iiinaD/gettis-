@@ -3,4 +3,11 @@ project(gettisXX)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_executable(gettisXX main.cpp)
+add_executable(gettisXX src/main.cpp
+        src/Language.cpp
+        src/Language.h
+        src/Interpreted.cpp
+        src/Interpreted.h
+        src/Compiled.cpp
+        src/Compiled.h
+)
