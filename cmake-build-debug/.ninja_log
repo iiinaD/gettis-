@@ -1,7 +1,0 @@
-# ninja log v6
-4	182	1718878666942028772	CMakeFiles/gettisXX.dir/main.cpp.o.ddi	84f9fa2c5f87900c
-182	190	1718878667118694593	CMakeFiles/gettisXX.dir/CXX.dd	4049964dd6e9fad5
-182	190	1718878667118694593	/home/danielh/Documents/cpp/gettisXX/cmake-build-debug/CMakeFiles/gettisXX.dir/CXXModules.json	4049964dd6e9fad5
-182	190	1718878667118694593	CMakeFiles/gettisXX.dir/main.cpp.o.modmap	4049964dd6e9fad5
-191	1731	1718878667128694545	CMakeFiles/gettisXX.dir/main.cpp.o	d7254db782ef5ce0
-1733	1820	1718878668668687169	gettisXX	be6ed237bee757a
