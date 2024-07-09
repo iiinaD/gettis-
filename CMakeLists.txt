@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(gettisXX)
 
-set(CMAKE_CXX_STANDARD 11)  # Adjust as per your requirement, C++11 or later recommended
+set(CMAKE_CXX_STANDARD 17)  # Adjust as per your requirement, C++11 or later recommended
 
 # Include FetchContent module
 include(FetchContent)
@@ -75,6 +75,15 @@ if(NOT CURL_FOUND)
     find_package(CURL REQUIRED)
 endif()
 
+# Fetch tomlplusplus
+FetchContent_Declare(
+        tomlplusplus
+        URL https://github.com/marzer/tomlplusplus/archive/v3.4.0.tar.gz
+        URL_HASH SHA256=8517f65938a4faae9ccf8ebb36631a38c1cadfb5efa85d9a72e15b9e97d25155
+)
+
+FetchContent_MakeAvailable(tomlplusplus)
+
 # Add executable and link with Curl and OpenSSL
 add_executable(gettisXX
         src/main.cpp
@@ -86,6 +95,12 @@ add_executable(gettisXX
         src/CompiledLanguage.h
         src/fetcher.cpp
         src/fetcher.h
+        src/langs/Java.cpp
+        src/langs/Java.h
+        src/langs/Cpp.cpp
+        src/langs/Cpp.h
+        src/ProjectSettings.cpp
+        src/ProjectSettings.h
 )
 
 target_include_directories(gettisXX PRIVATE ${CURL_INCLUDE_DIR})

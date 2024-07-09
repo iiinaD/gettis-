@@ -10,9 +10,15 @@
 #include "Language.h"
 using std::string;
 
-class CompiledLanguage : Language{
-    string compiler;
-    int compile();
+class CompiledLanguage : public Language {
+public:
+    CompiledLanguage();
+    ~CompiledLanguage();
+    virtual int compile();
+    virtual int compile(string mainFile) = 0;
+    string execute(string input) override = 0;
+    int test();
+
 };
 
 

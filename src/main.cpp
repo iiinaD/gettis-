@@ -3,16 +3,26 @@
 #include <unordered_map>
 #include "Language.h"
 #include "CompiledLanguage.h"
+#include "langs/Java.h"
+#include "ProjectSettings.h"
+
 
 using std::string;
 
+void decompressFile(string inputFile) {
+    std:string command = "unzip ";
+    command += inputFile;
 
-void getTestFiles() {
+    int returnCode = system(command.c_str());
+    system(("rm " + inputFile).c_str());
+}
+
+void getTestFiles(const char *fileName) {
     CURL *curl;
     CURLcode res;
     FILE *file;
     const char *url = "https://open.kattis.com/problems/twosum/file/statement/samples.zip";
-    const char *fileName = "samples.zip";
+    //const char *fileName = "samples.zip";
 
     curl = curl_easy_init();
     if(curl) {
@@ -40,7 +50,7 @@ void getTestFiles() {
         curl_easy_cleanup(curl);
         fclose(file); //Closing the file
     }
-    //TODO unzip file
+    decompressFile(fileName);
 }
 
 void initialiseProject(string problemName){
@@ -58,18 +68,21 @@ std::unordered_map<string, char> COMMANDS = {
         {"help", 'h'}
 };
 
-std::unordered_map<string, Language> LANGUAGE = {
-        {"java", new CompiledLanguage()}
+std::unordered_map<string, Language*> LANGUAGE = {
+        {"java", new Java()}
 };
+
+
 
 int main(int argc, char *argv[]) {
     std::cout << "Hello, World!" << std::endl;
-
     if (argc <= 1) {
-        std::cout << "Incorrect usage of the gettis command. See \"gettis help\" for more info";
+        std::cout << "Incorrect usage of the gettis command. See \"gettis help\" for more info" << std::endl;
     }
     // Read the command
-    char command = COMMANDS[argv[1]];
+    //char command = COMMANDS[argv[1]];
+    char command = 'i';
+    new ProjectSettings();
 
     switch (command) {
         case 'i':
@@ -90,8 +103,17 @@ int main(int argc, char *argv[]) {
     }
 
 
+    const char* fileName = "samples.zip";
+    getTestFiles(fileName);
 
-    getTestFiles();
+    std::vector<string> result = Language::findTrimmedFilesByExtension({".in"});
+
+    for (const auto& entry : result) {
+        std::cout << entry << std::endl;
+    }
+
+    LANGUAGE["java"]->test();
+
     std::cout << "\nFinished";
     return 0;
 }
