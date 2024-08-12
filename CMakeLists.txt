@@ -54,12 +54,15 @@ if(NOT CURL_FOUND)
     FetchContent_Declare(
             curl
             URL https://curl.se/download/curl-8.8.0.tar.gz
-            URL_HASH SHA256=77c0e1cd35ab5b45b659645a93b46d660224d0024f1185e8a95cdb27ae3d787d # Update to the version and hash you need
+            URL_HASH SHA256=77c0e1cd35ab5b45b659645a93b46d660224d0024f1185e8a95cdb27ae3d787d
     )
 
-    # Specify that curl should use the built OpenSSL
+    # Set CMake options for building curl with static library and OpenSSL
     set(CURL_USE_OPENSSL TRUE)
-    set(CMAKE_USE_OPENSSL TRUE)
+    set(BUILD_CURL_EXE OFF)
+    set(BUILD_SHARED_LIBS OFF)
+    set(CURL_STATICLIB ON)
+    set(OPENSSL_ROOT_DIR ${OPENSSL_ROOT_DIR})
     set(OPENSSL_INCLUDE_DIR ${OPENSSL_INCLUDE_DIR})
     set(OPENSSL_CRYPTO_LIBRARY ${OPENSSL_CRYPTO_LIBRARY})
     set(OPENSSL_SSL_LIBRARY ${OPENSSL_SSL_LIBRARY})
@@ -75,13 +78,11 @@ if(NOT CURL_FOUND)
     find_package(CURL REQUIRED)
 endif()
 
-# Fetch tomlplusplus
 FetchContent_Declare(
         tomlplusplus
-        URL https://github.com/marzer/tomlplusplus/archive/v3.4.0.tar.gz
-        URL_HASH SHA256=8517f65938a4faae9ccf8ebb36631a38c1cadfb5efa85d9a72e15b9e97d25155
+        GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+        GIT_TAG v3.4.0
 )
-
 FetchContent_MakeAvailable(tomlplusplus)
 
 # Add executable and link with Curl and OpenSSL
@@ -103,5 +104,8 @@ add_executable(gettisXX
         src/ProjectSettings.h
 )
 
-target_include_directories(gettisXX PRIVATE ${CURL_INCLUDE_DIR})
-target_link_libraries(gettisXX ${CURL_LIBRARY} OpenSSL::SSL OpenSSL::Crypto)
+# Include directories for CURL and tomlplusplus
+target_include_directories(gettisXX PRIVATE ${CURL_INCLUDE_DIR} ${tomlplusplus_SOURCE_DIR}/include)
+
+# Link with the appropriate libraries
+target_link_libraries(gettisXX PRIVATE ${CURL_LIBRARY} OpenSSL::SSL OpenSSL::Crypto)
