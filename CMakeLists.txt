@@ -98,8 +98,6 @@ add_executable(gettisXX
         src/fetcher.h
         src/langs/Java.cpp
         src/langs/Java.h
-        src/langs/Cpp.cpp
-        src/langs/Cpp.h
         src/ProjectSettings.cpp
         src/ProjectSettings.h
 )

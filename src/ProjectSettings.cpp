@@ -8,6 +8,20 @@
 #include <toml++/toml.h>
 
 ProjectSettings::ProjectSettings() {
+    
+}
+
+void ProjectSettings::initSettings(string problemName, Language lang, string mainFile) {
+    std::ofstream file(".gettis");
+    string output = "";
+    output += "lang = " + lang.lang + "\n";
+    output += "mainfile = " + mainFile + "\n"; 
+    output += "problem = " + problemName + "\n";
+    file.write(output.c_str(), sizeof(int));
+    file.close();
+}
+
+void ProjectSettings::parseSettings() {
     try {
         // Parse a TOML file
         auto data = toml::parse_file(".gettis");

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <curl/curl.h>
 #include <unordered_map>
+#include <filesystem>
+#include <fstream>
 #include "Language.h"
 #include "CompiledLanguage.h"
 #include "langs/Java.h"
@@ -17,7 +19,7 @@ void decompressFile(string inputFile) {
     system(("rm " + inputFile).c_str());
 }
 
-void getTestFiles(const char *fileName) {
+void getTestFiles(string fileName) {
     CURL *curl;
     CURLcode res;
     FILE *file;
@@ -27,7 +29,7 @@ void getTestFiles(const char *fileName) {
     curl = curl_easy_init();
     if(curl) {
 
-        file = fopen(fileName,"wb");
+        file = fopen(fileName.c_str(),"wb");
         if(file == NULL){
             std::cerr << "Error opening file" << fileName << std::endl;
             return;
@@ -54,11 +56,23 @@ void getTestFiles(const char *fileName) {
 }
 
 void initialiseProject(string problemName){
-
+    
 }
 
-void initialiseProject(string problemName, Language lang){
-
+void initialiseProject(string problemName, Language& lang){
+    string camelProblemName = problemName;
+    camelProblemName[0] = std::toupper(camelProblemName[0]);
+    std::cout << camelProblemName << std::endl;
+    std::filesystem::create_directory(camelProblemName.c_str()); // mkdir in current directory with problem name
+    system(("cd " + camelProblemName).c_str());
+    // download test files and extract
+    getTestFiles(problemName);
+    // Make main file
+    string filename = lang.createFile(camelProblemName);
+    // Make project settings file
+    ProjectSettings *ps = new ProjectSettings();
+    ps->initSettings(camelProblemName, lang, filename);
+    delete ps;
 }
 
 std::unordered_map<string, char> COMMANDS = {
@@ -75,7 +89,6 @@ std::unordered_map<string, Language*> LANGUAGE = {
 
 
 int main(int argc, char *argv[]) {
-    std::cout << "Hello, World!" << std::endl;
     if (argc <= 1) {
         std::cout << "Incorrect usage of the gettis command. See \"gettis help\" for more info" << std::endl;
     }
@@ -87,6 +100,7 @@ int main(int argc, char *argv[]) {
     switch (command) {
         case 'i':
             // Run init
+            initialiseProject("twosum", *LANGUAGE["java"]);
             break;
         case 't':
             // Run test
@@ -103,16 +117,16 @@ int main(int argc, char *argv[]) {
     }
 
 
-    const char* fileName = "samples.zip";
-    getTestFiles(fileName);
+    //const char* fileName = "samples.zip";
+    //getTestFiles(fileName);
 
-    std::vector<string> result = Language::findTrimmedFilesByExtension({".in"});
+    //std::vector<string> result = Language::findTrimmedFilesByExtension({".in"});
 
-    for (const auto& entry : result) {
+    /*for (const auto& entry : result) {
         std::cout << entry << std::endl;
-    }
+    }*/
 
-    LANGUAGE["java"]->test();
+    //LANGUAGE["java"]->test();
 
     std::cout << "\nFinished";
     return 0;

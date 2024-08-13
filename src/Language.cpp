@@ -71,6 +71,19 @@ std::vector<std::string> Language::findTrimmedFilesByExtension(std::vector<std::
 
 }
 
+string Language::getBoilerplate(string problemName){
+    return "";
+}
+
+string Language::createFile(string fileName){
+    string fullFileName = fileName + fileExtension[0];
+    std::ofstream file(fullFileName);
+    string content = getBoilerplate(fileName);
+    file.write(content.c_str(), content.size());
+    file.close();
+    return fullFileName;
+}
+
 Language::Language() = default;
 
 Language::~Language() = default;

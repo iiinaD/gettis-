@@ -21,6 +21,10 @@ public:
     static std::vector<std::string> findFilesByExtension(std::vector<std::string> extensions);
     static string getFileContent(string fileName);
     virtual int test();
+    virtual string getBoilerplate(string problemName);
+    string createFile(string fileName);
+    string lang;
+    std::vector<std::string> fileExtension;
 
     static std::vector<string> findTrimmedFilesByExtension(std::vector<std::string> extensions);
 };

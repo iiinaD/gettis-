@@ -9,8 +9,10 @@
 
 class Java : public CompiledLanguage{
 public:
+    Java();
     int compile(string directoryName) override;
     string execute(string input) override;
+    string getBoilerplate(string problemName) override;
 };
 
 

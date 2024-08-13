@@ -5,10 +5,13 @@
 #include <sstream>
 #include "Java.h"
 
+Java::Java() {
+    lang = "java";
+    fileExtension = {".java"};
+}
 
 int Java::compile(string directoryName){
-    std::vector<std::string> extensions = {".java"};
-    std::vector<std::string> files = Language::findFilesByExtension(extensions);
+    std::vector<std::string> files = Language::findFilesByExtension(fileExtension);
 
     std::string filesString;
     for (const auto& entry : files) {
@@ -16,6 +19,18 @@ int Java::compile(string directoryName){
     }
     system(("javac -encoding UTF-8 " + filesString).c_str());
     return 0;
+}
+
+string Java::getBoilerplate(string problemName) {
+    return 
+    "import java.util.Scanner\n"
+    "\n"
+    "public class " + problemName + " {\n"
+    "   public static void main(String[] args) {\n"
+    "       Scanner sc = new Scanner();\n"
+    "       sc.close();\n"
+    "   }\n"
+    "}";
 }
 
 std::string Java::execute(string input) {
@@ -30,3 +45,5 @@ std::string Java::execute(string input) {
     */
     return "";
 }
+
+
